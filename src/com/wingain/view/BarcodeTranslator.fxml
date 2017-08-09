@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="767.0" prefWidth="984.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wingain.controller.BarcodeTranslatorController">
+	<children>
+        <Label fx:id="app" layoutX="188.0" prefHeight="55.0" prefWidth="608.0" text="%app_name">
+         <font>
+            <Font size="41.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="22.0" layoutY="89.0" prefHeight="622.0" prefWidth="941.0">
+         <children>
+            <Label layoutX="45.0" layoutY="31.0" text="%order_number">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="orderNumber" layoutX="178.0" layoutY="29.0" prefHeight="27.0" prefWidth="282.0" promptText="%input_order_number" />
+            <Button fx:id="startScanBtn" layoutX="45.0" layoutY="82.0" mnemonicParsing="false" onAction="#onStartScan" prefHeight="35.0" prefWidth="108.0" text="%start_scan">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="stopScanBtn" layoutX="290.0" layoutY="82.0" mnemonicParsing="false" onAction="#onStopScan" text="%stop_scan">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <TextArea fx:id="logText" layoutX="38.0" layoutY="553.0" prefHeight="55.0" prefWidth="472.0" />
+            <ImageView fx:id="barImage" fitHeight="150.0" fitWidth="350.0" layoutX="23.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+            <TextField fx:id="imageW" layoutX="535.0" layoutY="29.0" text="400" />
+            <Label layoutX="493.0" layoutY="34.0" text="Width" />
+            <Label layoutX="491.0" layoutY="88.0" text="Height" />
+            <TextField fx:id="imgHeight" layoutX="535.0" layoutY="83.0" text="50" />
+         </children>
+      </AnchorPane>
+    </children>
+</AnchorPane>
