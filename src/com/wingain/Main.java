@@ -2,6 +2,8 @@ package com.wingain;
 	
 import java.util.ResourceBundle;
 
+import com.wingain.model.ProductShipmentDB;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -14,8 +16,16 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 		    
+//		    if(true)
+//		    {
+//		       ProductShipmentDB.test();
+//		       return; 
+//		    }
+		    
+		    
 		    ResourceBundle bundles = ResourceBundle.getBundle("com.wingain.bundles.string");
-		    FXMLLoader loader = new FXMLLoader(getClass().getResource("view/BarcodeTranslator.fxml") ,bundles);
+		    //FXMLLoader loader = new FXMLLoader(getClass().getResource("view/BarcodeTranslator.fxml") ,bundles);
+		    FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ProductShipment.fxml") ,bundles);
 			//loader.setResources(bundles);
 		    
 		    //AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("view/BarcodeTranslator.fxml"));

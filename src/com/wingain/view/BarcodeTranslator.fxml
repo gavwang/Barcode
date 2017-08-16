@@ -11,39 +11,76 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="767.0" prefWidth="984.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wingain.controller.BarcodeTranslatorController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="767.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wingain.controller.BarcodeTranslatorController">
 	<children>
         <Label fx:id="app" layoutX="188.0" prefHeight="55.0" prefWidth="608.0" text="%app_name">
          <font>
             <Font size="41.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="22.0" layoutY="89.0" prefHeight="622.0" prefWidth="941.0">
+      <AnchorPane layoutX="14.0" layoutY="55.0" prefHeight="213.0" prefWidth="891.0">
          <children>
-            <Label layoutX="45.0" layoutY="31.0" text="%order_number">
+            <Label layoutX="29.0" layoutY="25.0" prefHeight="35.0" prefWidth="133.0" text="%order_number">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="orderNumber" layoutX="178.0" layoutY="29.0" prefHeight="27.0" prefWidth="282.0" promptText="%input_order_number" />
-            <Button fx:id="startScanBtn" layoutX="45.0" layoutY="82.0" mnemonicParsing="false" onAction="#onStartScan" prefHeight="35.0" prefWidth="108.0" text="%start_scan">
+            <TextField fx:id="orderNumber" layoutX="171.0" layoutY="29.0" prefHeight="35.0" prefWidth="240.0" promptText="%input_order_number" />
+            <Button fx:id="startScanBtn" layoutX="29.0" layoutY="127.0" mnemonicParsing="false" onAction="#onStartScan" prefHeight="35.0" prefWidth="76.0" text="%start_scan">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <Button fx:id="stopScanBtn" layoutX="290.0" layoutY="82.0" mnemonicParsing="false" onAction="#onStopScan" text="%stop_scan">
+            <Button fx:id="stopScanBtn" layoutX="117.0" layoutY="127.0" mnemonicParsing="false" onAction="#onStopScan" prefHeight="35.0" prefWidth="76.0" text="%stop_scan">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextArea fx:id="logText" layoutX="38.0" layoutY="553.0" prefHeight="55.0" prefWidth="472.0" />
-            <ImageView fx:id="barImage" fitHeight="150.0" fitWidth="350.0" layoutX="23.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="barImage" fitHeight="150.0" fitWidth="350.0" layoutX="458.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
             </ImageView>
-            <TextField fx:id="imageW" layoutX="535.0" layoutY="29.0" text="400" />
-            <Label layoutX="493.0" layoutY="34.0" text="Width" />
-            <Label layoutX="491.0" layoutY="88.0" text="Height" />
-            <TextField fx:id="imgHeight" layoutX="535.0" layoutY="83.0" text="50" />
+            <Label layoutX="29.0" layoutY="76.0" prefHeight="35.0" prefWidth="133.0" text="%product_short_name">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="shortName" layoutX="171.0" layoutY="76.0" prefHeight="35.0" prefWidth="240.0" promptText="%product_short_name" />
+            <Label layoutX="267.0" layoutY="127.0" prefHeight="35.0" prefWidth="65.0" text="%copies">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="copiesSpinner" amountToStepBy="1" initialValue="1" layoutX="338.0" layoutY="127.0" min="1" onMouseClicked="#onChangeCopies" prefHeight="35.0" prefWidth="73.0">
+                <max>
+                    <Integer fx:constant="MAX_VALUE" />
+                </max>
+            </Spinner>
+            <TextField fx:id="labelContent" layoutX="108.0" layoutY="166.0" onKeyPressed="#onLabelScanDone" onMouseClicked="#onMouseTest" prefHeight="35.0" prefWidth="309.0" />
+            <Button fx:id="password" layoutX="200.0" layoutY="127.0" mnemonicParsing="false" onAction="#onPassword" prefHeight="35.0" prefWidth="59.0" text="%password" />
+            <Label layoutX="29.0" layoutY="166.0" prefHeight="35.0" prefWidth="76.0" text="%label" />
          </children>
       </AnchorPane>
+      <AnchorPane layoutX="14.0" layoutY="291.0" prefHeight="465.0" prefWidth="891.0">
+         <children>
+            <Label layoutX="14.0" layoutY="11.0" prefHeight="35.0" prefWidth="108.0" text="%order_number" />
+            <TextField fx:id="orderSearch" layoutX="146.0" layoutY="11.0" onKeyPressed="#onOrderSearchDone" prefHeight="35.0" prefWidth="185.0" />
+            <TextField fx:id="productCodeSearch" layoutX="505.0" layoutY="14.0" onKeyPressed="#onProductSearchDone" prefHeight="35.0" prefWidth="185.0" />
+            <Label layoutX="384.0" layoutY="14.0" prefHeight="35.0" prefWidth="108.0" text="%product_code" />
+            <Label layoutX="14.0" layoutY="57.0" prefHeight="35.0" prefWidth="108.0" text="%time_periods" />
+            <DatePicker fx:id="fromTime" layoutX="146.0" layoutY="57.0" prefHeight="35.0" prefWidth="185.0" />
+            <DatePicker fx:id="toTime" layoutX="505.0" layoutY="61.0" prefHeight="35.0" prefWidth="185.0" />
+            <Label layoutX="411.0" layoutY="61.0" prefHeight="35.0" prefWidth="27.0" text="%to" />
+            <Button layoutX="763.0" layoutY="11.0" mnemonicParsing="false" onAction="#onLabelSearch" prefHeight="35.0" prefWidth="85.0" text="%search" />
+            <Button layoutX="763.0" layoutY="57.0" mnemonicParsing="false" onAction="#onLabelExport" prefHeight="35.0" prefWidth="85.0" text="%export" />
+            <TableView fx:id="resultTable" layoutX="12.0" layoutY="117.0" prefHeight="320.0" prefWidth="861.0">
+              <columns>
+                <TableColumn prefWidth="59.0" text="%No" />
+                <TableColumn prefWidth="133.0" text="%order_number" />
+                 <TableColumn prefWidth="115.0" text="%product_code" />
+                 <TableColumn prefWidth="459.0" text="%label_content" />
+                 <TableColumn prefWidth="94.0" text="%time" />
+              </columns>
+            </TableView>
+            <Label layoutX="113.0" layoutY="57.0" prefHeight="35.0" prefWidth="27.0" text="%from" />
+         </children></AnchorPane>
     </children>
 </AnchorPane>

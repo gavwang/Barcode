@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="root" prefHeight="576.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wingain.controller.ProductShipmentController">
+   <children>
+      <Label layoutX="25.0" layoutY="66.0" prefHeight="35.0" prefWidth="96.0" text="%order_number">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="25.0" layoutY="122.0" prefHeight="35.0" prefWidth="96.0" text="%product_code">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="25.0" layoutY="178.0" prefHeight="35.0" prefWidth="96.0" text="%series_no">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="orderNo" layoutX="132.0" layoutY="70.0" onKeyPressed="#onOrderNoDone" prefHeight="35.0" prefWidth="167.0" />
+      <TextField fx:id="productCode" layoutX="132.0" layoutY="122.0" onKeyPressed="#onProductCodeDone" prefHeight="35.0" prefWidth="167.0" />
+      <TextField fx:id="seriesNo" layoutX="132.0" layoutY="178.0" onKeyPressed="#onSeriesNoDone" prefHeight="35.0" prefWidth="167.0" />
+      <AnchorPane layoutX="12.0" layoutY="289.0" prefHeight="271.0" prefWidth="806.0">
+         <children>
+            <TableView fx:id="resultTable" layoutX="7.0" layoutY="14.0" prefHeight="250.0" prefWidth="787.0">
+               <columns>
+                  <TableColumn prefWidth="59.0" text="%No" />
+                  <TableColumn prefWidth="193.0" text="%order_number" />
+                  <TableColumn prefWidth="173.0" text="%product_code" />
+                  <TableColumn prefWidth="205.0" text="%series_no" />
+                  <TableColumn prefWidth="150.0" text="%time" />
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="421.0" layoutY="61.0" prefHeight="35.0" prefWidth="236.0" text="%time_periods" />
+      <Label layoutX="421.0" layoutY="99.0" prefHeight="35.0" prefWidth="27.0" text="%from" />
+      <DatePicker fx:id="fromTime" layoutX="473.0" layoutY="106.0" prefHeight="35.0" prefWidth="185.0" />
+      <Label layoutX="421.0" layoutY="165.0" prefHeight="35.0" prefWidth="27.0" text="%to" />
+      <DatePicker fx:id="toTime" layoutX="473.0" layoutY="161.0" prefHeight="35.0" prefWidth="185.0" />
+      <Button layoutX="741.0" layoutY="104.0" mnemonicParsing="false" onAction="#onSearch" prefHeight="35.0" prefWidth="85.0" text="%search" />
+      <Button layoutX="739.0" layoutY="165.0" mnemonicParsing="false" onAction="#onOrderExport" prefHeight="35.0" prefWidth="85.0" text="%export" />
+      <Label layoutX="320.0" layoutY="14.0" prefHeight="48.0" prefWidth="256.0" text="%app_name">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button layoutX="203.0" layoutY="226.0" mnemonicParsing="false" onAction="#onScanDone" prefHeight="35.0" prefWidth="96.0" text="%done" />
+   </children>
+</AnchorPane>
