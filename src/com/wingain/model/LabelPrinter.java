@@ -1,12 +1,19 @@
 package com.wingain.model;
 import java.awt.Font;
+
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 public class LabelPrinter {
     public interface TscLibDll extends Library {
         TscLibDll INSTANCE = (TscLibDll) Native.loadLibrary ("BCP", TscLibDll.class);
@@ -146,6 +153,15 @@ public class LabelPrinter {
         LabelPrinter.TscLibDll.INSTANCE.printlabel("1", "1");
 
     }   
+    
+    public static void playRepeatWaring()
+    {
+        Media hit = new Media(new File("repeat.mp3").toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.play();
+        
+    }
+    
     public static void test()
     {
     	int restust = openPrinter();

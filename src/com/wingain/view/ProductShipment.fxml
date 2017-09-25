@@ -44,13 +44,15 @@
       <DatePicker fx:id="fromTime" layoutX="473.0" layoutY="106.0" prefHeight="35.0" prefWidth="185.0" />
       <Label layoutX="421.0" layoutY="165.0" prefHeight="35.0" prefWidth="27.0" text="%to" />
       <DatePicker fx:id="toTime" layoutX="473.0" layoutY="161.0" prefHeight="35.0" prefWidth="185.0" />
-      <Button layoutX="741.0" layoutY="104.0" mnemonicParsing="false" onAction="#onSearch" prefHeight="35.0" prefWidth="85.0" text="%search" />
-      <Button layoutX="739.0" layoutY="165.0" mnemonicParsing="false" onAction="#onOrderExport" prefHeight="35.0" prefWidth="85.0" text="%export" />
+      <Button layoutX="708.0" layoutY="105.0" mnemonicParsing="false" onAction="#onSearch" prefHeight="35.0" prefWidth="85.0" text="%search" />
+      <Button layoutX="708.0" layoutY="165.0" mnemonicParsing="false" onAction="#onOrderExport" prefHeight="35.0" prefWidth="85.0" text="%export" />
       <Label layoutX="130.0" layoutY="14.0" prefHeight="48.0" prefWidth="538.0" text="%app_name2">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button layoutX="203.0" layoutY="226.0" mnemonicParsing="false" onAction="#onScanDone" prefHeight="35.0" prefWidth="96.0" text="%done" />
+      <Button layoutX="168.0" layoutY="261.0" mnemonicParsing="false" onAction="#onScanDone" prefHeight="35.0" prefWidth="96.0" text="%done" />
+      <TextField fx:id="series_no_txt" layoutX="132.0" layoutY="219.0" prefHeight="35.0" prefWidth="167.0" />
+      <Button layoutX="708.0" layoutY="254.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="35.0" prefWidth="85.0" text="%delete" />
    </children>
 </AnchorPane>

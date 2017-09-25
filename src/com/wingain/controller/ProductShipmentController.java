@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.wingain.model.LabelPrinter;
 import com.wingain.model.ProductShipment;
 import com.wingain.model.ProductShipmentModel;
 import com.wingain.model.ShipmentPrinter;
@@ -49,6 +50,9 @@ public class ProductShipmentController implements Initializable
     DatePicker fromTime;
     @FXML
     DatePicker toTime;
+    @FXML TextField series_no_txt;
+    
+    private ProductShipment selectedItem ;
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -56,6 +60,8 @@ public class ProductShipmentController implements Initializable
         resourceBundle = resources;
         model = new ProductShipmentModel();
         initResultTable();
+        
+        series_no_txt.setEditable(false);
 
     }
     
@@ -69,6 +75,7 @@ public class ProductShipmentController implements Initializable
         tableColumns.get(4).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_Time));
         
         resultTable.setItems(searchResult);
+        selectedItem = null;
         resultTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         resultTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ProductShipment>()
         {
@@ -76,10 +83,9 @@ public class ProductShipmentController implements Initializable
             @Override
             public void changed(ObservableValue<? extends ProductShipment> observable, ProductShipment oldValue, ProductShipment newValue)
             {
-                //int index = resultTable.getSelectionModel().getSelectedIndex();
                 if(newValue != null)
                 {
-                    //renderLabel(newValue.getLabelContent(), productShortName, 350, 150);
+                    selectedItem = newValue;
                 }
             }
         });
@@ -119,10 +125,12 @@ public class ProductShipmentController implements Initializable
                 if(!model.db().addProductCode(productCode.getText()))
                 {
                     productCode.setText("");
-                    showAlertDialog("Warnning", "ProductCode is already scaned!");
+                    showRepeatAlertDialog("Warnning", "ProductCode is already scaned!" , "ProductCode: " + productCode.getText());
                 }else
                 {
                     productCode.setDisable(true);
+                    searchResult.clear();
+                    
                     seriesNo.requestFocus();
                 }
             }
@@ -135,14 +143,18 @@ public class ProductShipmentController implements Initializable
     {
         if (event.getEventType() == KeyEvent.KEY_PRESSED && event.getCode() == KeyCode.ENTER)
         {
+            series_no_txt.setText(seriesNo.getText());
             if(checkTextField(seriesNo) && checkTextField(productCode) && checkTextField(orderNo))
             {
-                if(!model.db().addShipment(orderNo.getText(), productCode.getText(), seriesNo.getText()))
+                ProductShipment p = model.db().addShipment(orderNo.getText(), productCode.getText(), seriesNo.getText());
+                if(p == null)
+                {             
+                    showRepeatAlertDialog("Warnning", "Serirse: is already scaned!" , "SeriesNo: " + seriesNo.getText());
+                }else
                 {
-                    
-                    showAlertDialog("Warnning", "Serirse is already scaned!");
+                    searchResult.add(p);
                 }
-
+                
                 seriesNo.setText("");
                 seriesNo.requestFocus();
                 
@@ -198,6 +210,7 @@ public class ProductShipmentController implements Initializable
         productCode.setDisable(false);
         orderNo.setDisable(false);
         orderNo.requestFocus();
+        searchResult.clear();
     }
     
     private boolean checkTextField(TextField t)
@@ -208,11 +221,23 @@ public class ProductShipmentController implements Initializable
     private void showAlertDialog(String title, String content)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        
         alert.setTitle(title);
         alert.setHeaderText(content);
         alert.initOwner(root.getScene().getWindow());
         alert.show();
     }
+    private void showRepeatAlertDialog(String title, String header, String content )
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        LabelPrinter.playRepeatWaring();
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.initOwner(root.getScene().getWindow());
+        alert.show();
+    }
+    
     
     private List<ProductShipment> search()
     {
@@ -262,6 +287,16 @@ public class ProductShipmentController implements Initializable
         }
        return model.db().findLabelByTime(fTime.toString(), tTime.toString());
                
+    }
+
+    @FXML public void onDelete() {
+        if(selectedItem != null)
+        {
+            model.db().deleteShipment(selectedItem.getIndex());
+            ProductShipment tmp = selectedItem;
+            selectedItem = null;
+            searchResult.remove(tmp);
+        }
     }
 
 }

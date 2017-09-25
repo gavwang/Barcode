@@ -27,7 +27,7 @@ public class DBManager
         if(instance == null)
         {
             instance = new DBManager();
-            instance.openDB("formatData");
+            instance.openDB("ShipmentData");
             if(instance.connection == null)
             {
                 System.err.println("can't open db file");

@@ -63,14 +63,14 @@
          <children>
             <Label layoutX="14.0" layoutY="11.0" prefHeight="35.0" prefWidth="108.0" text="%order_number" />
             <TextField fx:id="orderSearch" layoutX="146.0" layoutY="11.0" onKeyPressed="#onOrderSearchDone" prefHeight="35.0" prefWidth="185.0" />
-            <TextField fx:id="productCodeSearch" layoutX="505.0" layoutY="14.0" onKeyPressed="#onProductSearchDone" prefHeight="35.0" prefWidth="185.0" />
-            <Label layoutX="384.0" layoutY="14.0" prefHeight="35.0" prefWidth="108.0" text="%product_code" />
+            <TextField fx:id="productCodeSearch" layoutX="464.0" layoutY="14.0" onKeyPressed="#onProductSearchDone" prefHeight="35.0" prefWidth="185.0" />
+            <Label layoutX="356.0" layoutY="14.0" prefHeight="35.0" prefWidth="108.0" text="%product_code" />
             <Label layoutX="14.0" layoutY="57.0" prefHeight="35.0" prefWidth="108.0" text="%time_periods" />
             <DatePicker fx:id="fromTime" layoutX="146.0" layoutY="57.0" prefHeight="35.0" prefWidth="185.0" />
-            <DatePicker fx:id="toTime" layoutX="505.0" layoutY="61.0" prefHeight="35.0" prefWidth="185.0" />
-            <Label layoutX="411.0" layoutY="61.0" prefHeight="35.0" prefWidth="27.0" text="%to" />
-            <Button layoutX="763.0" layoutY="11.0" mnemonicParsing="false" onAction="#onLabelSearch" prefHeight="27.0" prefWidth="76.0" text="%search" />
-            <Button layoutX="763.0" layoutY="48.0" mnemonicParsing="false" onAction="#onLabelExport" prefHeight="27.0" prefWidth="76.0" text="%export" />
+            <DatePicker fx:id="toTime" layoutX="464.0" layoutY="57.0" prefHeight="35.0" prefWidth="185.0" />
+            <Label layoutX="356.0" layoutY="58.0" prefHeight="35.0" prefWidth="27.0" text="%to" />
+            <Button layoutX="688.0" layoutY="11.0" mnemonicParsing="false" onAction="#onLabelSearch" prefHeight="27.0" prefWidth="76.0" text="%search" />
+            <Button layoutX="688.0" layoutY="48.0" mnemonicParsing="false" onAction="#onLabelExport" prefHeight="27.0" prefWidth="76.0" text="%export" />
             <TableView fx:id="resultTable" layoutX="12.0" layoutY="117.0" prefHeight="320.0" prefWidth="861.0">
               <columns>
                 <TableColumn prefWidth="59.0" text="%No" />
@@ -81,7 +81,8 @@
               </columns>
             </TableView>
             <Label layoutX="113.0" layoutY="57.0" prefHeight="35.0" prefWidth="27.0" text="%from" />
-            <Button layoutX="763.0" layoutY="83.0" mnemonicParsing="false" onAction="#onLabelPrinter" prefHeight="27.0" prefWidth="76.0" text="%print" />
+            <Button layoutX="688.0" layoutY="83.0" mnemonicParsing="false" onAction="#onLabelPrinter" prefHeight="27.0" prefWidth="76.0" text="%print" />
+            <Button layoutX="788.0" layoutY="84.0" mnemonicParsing="false" onAction="#onLabelDelete" prefHeight="27.0" prefWidth="76.0" text="%delete" />
          </children></AnchorPane>
     </children>
 </AnchorPane>

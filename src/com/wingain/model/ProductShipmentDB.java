@@ -99,14 +99,14 @@ public class ProductShipmentDB
             return false;
     }
     
-    public boolean addShipment(String order, String product, String series)
+    public ProductShipment addShipment(String order, String product, String series)
     {
         if(order == null || product == null || series == null)
-            return false;
+            return null;
         int orderID = orderID(order);
         int productCodeID = productCodeID(product);
         if(orderID == -1 || productCodeID == -1)
-            return false;
+            return null;
         
         String sql = String.format("INSERT INTO %s (%s,%s,%s) VALUES(%d , %d, '%s')", 
                 TABLE_SHIPMENT,
@@ -115,10 +115,49 @@ public class ProductShipmentDB
         
         int r = execute(sql);
         if(r != 1)
-            return false;
-        return true;
+        {
+            return null;
+        }else
+        {
+            //SELECT shipment.id FROM shipment WHERE shipment.order_id = 11 AND shipment.product_id = 7 AND  shipment.series_no = 'sdfgjhk5re'
+            sql = String.format("SELECT %s.%s FROM %s WHERE %s.%s = %d AND %s.%s = %d AND  %s.%s = '%s'",
+                    TABLE_SHIPMENT,TABLE_SHIPMENT_ID, TABLE_SHIPMENT, TABLE_SHIPMENT, TABLE_SHIPMENT_ORDER, orderID, TABLE_SHIPMENT,TABLE_SHIPMENT_PCODE, productCodeID,
+                    TABLE_SHIPMENT, TABLE_SHIPMENT_SCODE, series);
+            
+            try
+            {
+                Statement statement = DBManager.getConnection().createStatement();
+                ResultSet rs = statement.executeQuery(sql);
+
+                while (rs.next())
+                {
+                    ProductShipment tmp = new ProductShipment();
+                    tmp.setIndex(rs.getInt(TABLE_SHIPMENT_ID));
+                    tmp.setOrderNo(rs.getString(TABLE_ORDERS_ORDER));
+                    tmp.setProductCode(rs.getString(TABLE_PRODUCT_CODES_CODE));
+                    tmp.setSeriesNo(rs.getString(TABLE_SHIPMENT_SCODE));
+                    tmp.setTime(rs.getString(TABLE_SHIPMENT_TIME));
+                    
+                    rs.close();
+                    return tmp;
+                                   
+                }
+            } catch (SQLException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+            
+            return null;            
+        }
     }
       
+    public ProductShipment searchShipment(String order, String product, String series)
+    {
+        return null;
+        
+    }
     private static int execute(String sql)
     {
         Statement statement;
@@ -257,6 +296,14 @@ public class ProductShipmentDB
             e.printStackTrace();
         }
         return ret;
+    }
+
+
+    public void deleteShipment(int index)
+    {
+        String sql = String.format("DELETE from %s where %s.%s = %d",
+                TABLE_SHIPMENT, TABLE_SHIPMENT, TABLE_SHIPMENT_ID, index);
+        execute(sql);
     }
 
 }

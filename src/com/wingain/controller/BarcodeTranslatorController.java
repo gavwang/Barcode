@@ -11,8 +11,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-
 import com.wingain.model.DataExporter;
 import com.wingain.model.LabelBGenerator;
 import com.wingain.model.LabelDB;
@@ -87,6 +85,7 @@ public class BarcodeTranslatorController implements Initializable {
         resourceBundle = rb;
         LabelDB.instance();
         toggleCopiesSpiner();
+        labelContent.setDisable(true);
         
         
         initResultTable();
@@ -109,22 +108,16 @@ public class BarcodeTranslatorController implements Initializable {
         if(shortName.getText() != null && shortName.getText().length()>0)
             productShortName = shortName.getText();
         
+        if(LabelPrinter.openPrinter() != 1)
+        	return;
+        
         stopScanBtn.setDisable(false);
         startScanBtn.setDisable(true);
         labelContent.setDisable(false);
-        labelScanFocus();
-        LabelPrinter.openPrinter();
         
-//        scanThread = new Thread(new Runnable()
-//        {
-//            
-//            @Override
-//            public void run()
-//            {               
-//                scan();
-//            }
-//        });
-//        scanThread.start();
+        searchResult.clear();
+        labelScanFocus();
+        
         
     }
 
@@ -136,25 +129,10 @@ public class BarcodeTranslatorController implements Initializable {
         stopScanBtn.setDisable(true);
         LabelPrinter.closePrinter();
         
-//        if(scanThread != null)
-//        {
-//            scanThread.interrupt();
-//            scanThread = null;
-//        }
-    }
-    
-    private void scan()
-    {
-        Scanner scanner = new Scanner(System.in);
-        String character  = null;
-        do
-        {
-            character = scanner.next();
-            labelTranslate(character);
-        }while(!Thread.currentThread().isInterrupted());            
-        scanner.close();
 
     }
+    
+
 
     @FXML public void onChangeCopies(MouseEvent event) {
         System.out.println("on copies changed " + copiesSpinner.getValue());
@@ -242,6 +220,17 @@ public class BarcodeTranslatorController implements Initializable {
         alert.show();
     }
     
+    private void showRepeatAlertDialog(String title, String header, String content )
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        LabelPrinter.playRepeatWaring();
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.initOwner(root.getScene().getWindow());
+        alert.show();
+    }
+    
     private void labelScanFocus()
     {
         labelContent.clear();
@@ -254,8 +243,27 @@ public class BarcodeTranslatorController implements Initializable {
             BufferedImage image = labelTranslate( labelContent.getText());   
             if(image != null)
             {
-                LabelPrinter.printLabelB(labelContent.getText(),productShortName);
-                System.out.println(labelContent.getText());
+                
+                if(!LabelDB.instance().insertLabel(orderNumber.getText(), labelContent.getText()))
+                {
+                    showRepeatAlertDialog("Warnning", "The Label already be scanned", labelContent.getText());
+                }else
+                {
+                    LabelPrinter.printLabelB(labelContent.getText(),productShortName);
+                    System.out.println(labelContent.getText());
+                    
+                    List<com.wingain.model.Label> current = LabelDB.instance().findLabel(LabelDB.table_label_content, labelContent.getText());
+                    {
+                        if(current.size() == 1)
+                        {
+                            com.wingain.model.Label l = current.get(0);
+                            searchResult.add(new LabelItem(l.index, l.orderNum, l.productCode, l.labelContent, l.time));
+                        }
+                    }
+                    
+                    
+                }
+
             }
             labelScanFocus();
             
@@ -280,12 +288,7 @@ public class BarcodeTranslatorController implements Initializable {
                 showAlertDialog("error", "not Label format");
                 return null;
             }
-            if(!LabelDB.instance().insertLabel(orderNumber.getText(), result))
-            {
-                showAlertDialog("Warnning", "The Label already be scanned");
-                return null;
-                
-            }
+            
             
             if(shortName.getText() != null && shortName.getText().length()>0)
                 productShortName = shortName.getText();
@@ -295,7 +298,7 @@ public class BarcodeTranslatorController implements Initializable {
         
         return null;
     }
-    
+     
     private BufferedImage renderLabel(String l, String pShortName, int w, int h)
     {
         BufferedImage img = LabelBGenerator.labelB(l, pShortName , w, h);
@@ -443,6 +446,16 @@ public class BarcodeTranslatorController implements Initializable {
             LabelPrinter.printLabelB(selectedItem.getLabelContent(),productShortName );
             System.out.println(selectedItem.getLabelContent());
             LabelPrinter.closePrinter();
+        }
+    }
+
+    @FXML public void onLabelDelete() {
+        if(selectedItem != null)
+        {
+            LabelDB.instance().deleteLabel(selectedItem.getIndex());
+            LabelItem tmp = selectedItem;
+            selectedItem = null;
+            searchResult.remove(tmp);
         }
     }
 

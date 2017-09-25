@@ -184,6 +184,15 @@ public class LabelDB
             sql = String.format(sql, table_account, table_account_password,hashP ,table_account_name, "admin");
             execute(sql);
     }
+
+
+    public void deleteLabel(int index)
+    {
+        String sql = "DELETE from %s where %s.%s = %d";
+        sql = String.format(sql, table_label_name, table_label_name,table_label_No ,index);
+        execute(sql);
+        
+    }
   
 //    CREATE TABLE `label_records` (
 //            `No`    INTEGER PRIMARY KEY AUTOINCREMENT,
