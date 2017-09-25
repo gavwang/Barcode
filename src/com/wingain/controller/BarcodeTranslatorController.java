@@ -17,6 +17,7 @@ import com.wingain.model.DataExporter;
 import com.wingain.model.LabelBGenerator;
 import com.wingain.model.LabelDB;
 import com.wingain.model.LabelItem;
+import com.wingain.model.LabelPrinter;
 import com.wingain.utility.PasswordHash;
 
 import javafx.beans.value.ChangeListener;
@@ -76,6 +77,8 @@ public class BarcodeTranslatorController implements Initializable {
     @FXML DatePicker fromTime;
     @FXML DatePicker toTime;
     @FXML TableView<LabelItem> resultTable;
+    
+    private LabelItem selectedItem = null;
 
          
     @Override
@@ -110,6 +113,7 @@ public class BarcodeTranslatorController implements Initializable {
         startScanBtn.setDisable(true);
         labelContent.setDisable(false);
         labelScanFocus();
+        LabelPrinter.openPrinter();
         
 //        scanThread = new Thread(new Runnable()
 //        {
@@ -130,6 +134,7 @@ public class BarcodeTranslatorController implements Initializable {
         labelContent.setDisable(true);
         startScanBtn.setDisable(false);
         stopScanBtn.setDisable(true);
+        LabelPrinter.closePrinter();
         
 //        if(scanThread != null)
 //        {
@@ -201,11 +206,26 @@ public class BarcodeTranslatorController implements Initializable {
         
     }
     
-    public boolean authenticate(String password)
-    {  
-        String hashP = PasswordHash.passwordHash(password);     
+    public static void updateAuthen(String text)
+    {
+        String hashP = PasswordHash.passwordHash(text); 
+        LabelDB.instance().setPassword(hashP);
+        
+    }
+    
+    public static boolean checkAuthen(String passwd)
+    {
+        String hashP = PasswordHash.passwordHash(passwd);     
         String pass = LabelDB.instance().getPassword("admin");
         if(hashP.equals(pass))
+        {
+            return true;
+        }       
+        return false;
+    }
+    public boolean authenticate(String password)
+    {  
+        if(checkAuthen(password))
         {
             authenticated = true;
             toggleCopiesSpiner(); 
@@ -231,11 +251,18 @@ public class BarcodeTranslatorController implements Initializable {
     @FXML public void onLabelScanDone(KeyEvent event) {
         if(event.getEventType() == KeyEvent.KEY_PRESSED && event.getCode() == KeyCode.ENTER)
         {
-            labelTranslate( labelContent.getText());          
+            BufferedImage image = labelTranslate( labelContent.getText());   
+            if(image != null)
+            {
+                LabelPrinter.printLabelB(labelContent.getText(),productShortName);
+                System.out.println(labelContent.getText());
+            }
             labelScanFocus();
             
         }
     }
+    
+   
     private boolean labelCheck(String l)
     {
         if(l.length() > 20)
@@ -243,7 +270,7 @@ public class BarcodeTranslatorController implements Initializable {
         else
             return false;
     }
-    private boolean labelTranslate(String character)
+    private BufferedImage labelTranslate(String character)
     {
         if(character.startsWith("[)"))
         {
@@ -251,30 +278,31 @@ public class BarcodeTranslatorController implements Initializable {
             if(!labelCheck(character))
             {
                 showAlertDialog("error", "not Label format");
-                return false;
+                return null;
             }
             if(!LabelDB.instance().insertLabel(orderNumber.getText(), result))
             {
                 showAlertDialog("Warnning", "The Label already be scanned");
-                return false;
+                return null;
                 
             }
             
             if(shortName.getText() != null && shortName.getText().length()>0)
                 productShortName = shortName.getText();
             
-            renderLabel(result, productShortName, 350, 150);
+            return renderLabel(result, productShortName, 350, 150);
         }
         
-        return true;
+        return null;
     }
     
-    private void renderLabel(String l, String pShortName, int w, int h)
+    private BufferedImage renderLabel(String l, String pShortName, int w, int h)
     {
         BufferedImage img = LabelBGenerator.labelB(l, pShortName , w, h);
         WritableImage image = new WritableImage(img.getWidth(),img.getHeight());
         javafx.embed.swing.SwingFXUtils.toFXImage(img, image);
         barImage.setImage(image);
+        return img;
     }
 
     private void initResultTable()
@@ -288,6 +316,7 @@ public class BarcodeTranslatorController implements Initializable {
         
         resultTable.setItems(searchResult);
         resultTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        selectedItem = null;
         resultTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<LabelItem>()
         {
 
@@ -298,6 +327,7 @@ public class BarcodeTranslatorController implements Initializable {
                 if(newValue != null)
                 {
                     renderLabel(newValue.getLabelContent(), productShortName, 350, 150);
+                    selectedItem = newValue;
                 }
             }
         });
@@ -317,6 +347,7 @@ public class BarcodeTranslatorController implements Initializable {
         
         if(result == null)
             return;
+        selectedItem = null;
         for(com.wingain.model.Label l:result)
         {
             searchResult.add(new LabelItem(l.index, l.orderNum, l.productCode, l.labelContent, l.time));
@@ -404,5 +435,17 @@ public class BarcodeTranslatorController implements Initializable {
        return LabelDB.instance().findLabelByTime(fTime.toString(), tTime.toString());
                
     }
+
+    @FXML public void onLabelPrinter() {
+        if(selectedItem != null)
+        {
+            LabelPrinter.openPrinter();
+            LabelPrinter.printLabelB(selectedItem.getLabelContent(),productShortName );
+            System.out.println(selectedItem.getLabelContent());
+            LabelPrinter.closePrinter();
+        }
+    }
+
+
 
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="root"  prefHeight="243.0" prefWidth="368.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wingain.controller.PasswdConfig">
+   <children>
+      <Label layoutX="22.0" layoutY="42.0" prefHeight="23.0" prefWidth="93.0" text="%old" />
+      <PasswordField id="old_passwd_txt" fx:id="old_pass" layoutX="127.0" layoutY="40.0" />
+      <PasswordField id="new_passwd_txt" fx:id="new_pass" layoutX="127.0" layoutY="86.0" />
+      <Label layoutX="22.0" layoutY="88.0" prefHeight="23.0" prefWidth="93.0" text="%new_pass" />
+      <PasswordField id="new_passwd_c_txt" fx:id="new_pass_confirm" layoutX="127.0" layoutY="134.0" />
+      <Label layoutX="22.0" layoutY="136.0" prefHeight="23.0" prefWidth="93.0" text="%new_pass_confirm" />
+      <Button layoutX="54.0" layoutY="189.0" mnemonicParsing="false" onAction="#onPassOK" prefHeight="34.0" prefWidth="93.0" text="OK" />
+      <Button layoutX="219.0" layoutY="189.0" mnemonicParsing="false" onAction="#onPassCancle" prefHeight="34.0" prefWidth="93.0" text="Cancle" />
+   </children>
+</AnchorPane>

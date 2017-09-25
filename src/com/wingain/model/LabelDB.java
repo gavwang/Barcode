@@ -175,6 +175,15 @@ public class LabelDB
         
         return null;
     }
+
+
+    public void setPassword(String hashP)
+    {
+            String sql = "SELECT %s FROM %s WHERE %s = '%s'";
+            sql = "UPDATE %s SET %s = '%s' where %s = '%s'";
+            sql = String.format(sql, table_account, table_account_password,hashP ,table_account_name, "admin");
+            execute(sql);
+    }
   
 //    CREATE TABLE `label_records` (
 //            `No`    INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.List;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
@@ -18,8 +17,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.omg.CORBA.INTERNAL;
-
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -27,7 +24,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.datamatrix.DataMatrixWriter;
 import com.google.zxing.oned.Code128Writer;
-import com.google.zxing.qrcode.QRCodeWriter;
+
 
 
 public class LabelBGenerator
@@ -79,6 +76,10 @@ public class LabelBGenerator
     public final static char group_seprator = 29;
     public final static char transmission = 4;
     
+    public static final String PRODUCT_CODE_HEADER = "1P";
+    public static final String SERIES_NO_HEADER = "S";
+    public static final String QUANTITY_HEADER = "Q";
+
     
     public static BufferedImage labelBGenerator(String contents, int width, int height)
     {
@@ -107,9 +108,8 @@ public class LabelBGenerator
         }else
             return labelContentParse0(content);
     }
-    public static final String PRODUCT_CODE_HEADER = "1P";
-    public static final String SERIES_NO_HEADER = "S";
-    public static final String QUANTITY_HEADER = "Q";
+    
+
     //public static final String X6 = "1633";
     
     
@@ -160,7 +160,7 @@ public class LabelBGenerator
         TextLayout layout = new TextLayout(text, font, frc);
         
         Rectangle r = layout.getPixelBounds(frc, 0, 0);
-        System.out.println(r);
+        //System.out.println(r);
         BufferedImage bi = new BufferedImage(r.width + 2, r.height + 2, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = (Graphics2D) bi.createGraphics();
         g2d.setBackground(Color.WHITE);
@@ -208,9 +208,9 @@ public class LabelBGenerator
              e1.printStackTrace();
          }
          
-         
          return nokiaLogo.getScaledInstance(NOKIA_LOGO_WIDTH,NOKIA_LOGO_HEIGHT, BufferedImage.SCALE_SMOOTH);
      }
+  
     
     public static BufferedImage labelB(String content, String name,int width, int height )
     {
@@ -282,14 +282,13 @@ public class LabelBGenerator
         Image tmp = matrix.getScaledInstance(50, 50, BufferedImage.SCALE_SMOOTH);
         graphics.drawImage(tmp, LABEL_B_WIDTH - HORIZONTAL_R_GAP - tmp.getWidth(null), 60,  null);
         graphics.dispose();
-        try
-        {
-            ImageIO.write(canvas, "png", new File("labelB.png"));
-        } catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            ImageIO.write(canvas, "png", new File("labelB.png"));
+//        } catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
         return canvas;
     }
     

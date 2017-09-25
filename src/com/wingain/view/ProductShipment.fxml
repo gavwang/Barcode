@@ -46,7 +46,7 @@
       <DatePicker fx:id="toTime" layoutX="473.0" layoutY="161.0" prefHeight="35.0" prefWidth="185.0" />
       <Button layoutX="741.0" layoutY="104.0" mnemonicParsing="false" onAction="#onSearch" prefHeight="35.0" prefWidth="85.0" text="%search" />
       <Button layoutX="739.0" layoutY="165.0" mnemonicParsing="false" onAction="#onOrderExport" prefHeight="35.0" prefWidth="85.0" text="%export" />
-      <Label layoutX="320.0" layoutY="14.0" prefHeight="48.0" prefWidth="256.0" text="%app_name">
+      <Label layoutX="130.0" layoutY="14.0" prefHeight="48.0" prefWidth="538.0" text="%app_name2">
          <font>
             <Font size="24.0" />
          </font>

@@ -2,8 +2,6 @@ package com.wingain;
 	
 import java.util.ResourceBundle;
 
-import com.wingain.model.ProductShipmentDB;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
@@ -40,6 +38,10 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+		
+		//LabelPrinter.openPrinter();
+		//LabelBGenerator.printLabel("1P473098A.102", "SRK173607585", "Q1", "1633", "Made In China", "ACIM");
+		//LabelPrinter.closePrinter();
 		launch(args);
 	}
 }

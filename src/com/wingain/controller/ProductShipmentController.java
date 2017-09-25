@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import com.wingain.model.ProductShipment;
 import com.wingain.model.ProductShipmentModel;
 import com.wingain.model.ShipmentPrinter;
-import com.wingain.model.TableDemo;
 
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;

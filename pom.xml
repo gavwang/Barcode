@@ -22,9 +22,35 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-assembly-plugin</artifactId>  
+            <version>2.5.5</version>  
+            <configuration>  
+                <archive>  
+                    <manifest>  
+                        <mainClass>com.wingain.Main</mainClass>  
+                    </manifest>  
+                </archive>  
+                <descriptorRefs>  
+                    <descriptorRef>jar-with-dependencies</descriptorRef>  
+                </descriptorRefs>  
+            </configuration>  
+            <executions>  
+                <execution>  
+                    <id>make-assembly</id>  
+                    <phase>package</phase>  
+                    <goals>  
+                        <goal>single</goal>  
+                    </goals>  
+                </execution> 
+            </executions>  
+        </plugin>
+        
     </plugins>
   </build>
   <dependencies>
+
   	<dependency>
   		<groupId>com.google.zxing</groupId>
   		<artifactId>core</artifactId>
@@ -44,6 +70,16 @@
   		<groupId>org.apache.poi</groupId>
   		<artifactId>poi-ooxml</artifactId>
   		<version>3.16</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.xerial</groupId>
+  		<artifactId>sqlite-jdbc</artifactId>
+  		<version>3.8.11.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.sun.jna</groupId>
+  		<artifactId>jna</artifactId>
+  		<version>3.0.9</version>
   	</dependency>
   </dependencies>
 </project>
