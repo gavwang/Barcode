@@ -72,7 +72,7 @@ public class PasswordAuthDialog implements Initializable
         try
         {
             ResourceBundle bundles = ResourceBundle.getBundle("com.wingain.bundles.string");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/PasswdConfig.fxml") ,bundles);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("PasswdConfig.fxml") ,bundles);
             
            // loader.setRoot(dialogStage);
             Parent root = loader.load();//FXMLLoader.load(getClass().getResource("../view/Password.fxml"));

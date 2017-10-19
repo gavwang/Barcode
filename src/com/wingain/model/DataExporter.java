@@ -180,4 +180,8 @@ public class DataExporter
     {
         return true;
     }
+	public static void exportShipments(List<ProductShipment> result, File file) {
+		// TODO Auto-generated method stub
+		
+	}
 }

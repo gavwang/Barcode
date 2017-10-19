@@ -22,8 +22,8 @@ public class Main extends Application {
 		    
 		    
 		    ResourceBundle bundles = ResourceBundle.getBundle("com.wingain.bundles.string");
-		    //FXMLLoader loader = new FXMLLoader(getClass().getResource("view/BarcodeTranslator.fxml") ,bundles);
-		    FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ProductShipment.fxml") ,bundles);
+		    FXMLLoader loader = new FXMLLoader(getClass().getResource("view/BarcodeTranslator.fxml") ,bundles);
+		    //FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ProductShipment.fxml") ,bundles);
 			//loader.setResources(bundles);
 		    
 		    //AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("view/BarcodeTranslator.fxml"));

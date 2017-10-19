@@ -5,6 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import com.wingain.view.NumberTextField?>
 
 <AnchorPane fx:id="root" prefHeight="576.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wingain.controller.ProductShipmentController">
    <children>
@@ -46,13 +47,27 @@
       <DatePicker fx:id="toTime" layoutX="473.0" layoutY="161.0" prefHeight="35.0" prefWidth="185.0" />
       <Button layoutX="708.0" layoutY="105.0" mnemonicParsing="false" onAction="#onSearch" prefHeight="35.0" prefWidth="85.0" text="%search" />
       <Button layoutX="708.0" layoutY="165.0" mnemonicParsing="false" onAction="#onOrderExport" prefHeight="35.0" prefWidth="85.0" text="%export" />
+      <Button layoutX="708.0" layoutY="210.0" mnemonicParsing="false" onAction="#onOrderPrint" prefHeight="35.0" prefWidth="85.0" text="%print" />
       <Label layoutX="130.0" layoutY="14.0" prefHeight="48.0" prefWidth="538.0" text="%app_name2">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button layoutX="168.0" layoutY="261.0" mnemonicParsing="false" onAction="#onScanDone" prefHeight="35.0" prefWidth="96.0" text="%done" />
+      <Button layoutX="203.0" layoutY="262.0" mnemonicParsing="false" onAction="#onScanDone" prefHeight="35.0" prefWidth="96.0" text="%done" />
       <TextField fx:id="series_no_txt" layoutX="132.0" layoutY="219.0" prefHeight="35.0" prefWidth="167.0" />
       <Button layoutX="708.0" layoutY="254.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="35.0" prefWidth="85.0" text="%delete" />
+      <Button layoutX="58.0" layoutY="262.0" mnemonicParsing="false" onAction="#onScanStart" prefHeight="35.0" prefWidth="96.0" text="%start" />
+      <NumberTextField fx:id="currentNumTxt" layoutX="474.0" layoutY="256.0" onKeyPressed="#onProductCodeDone" prefHeight="35.0" prefWidth="167.0" />
+      <NumberTextField fx:id="initNumTxt" layoutX="474.0" layoutY="204.0" onKeyPressed="#onOrderNoDone" prefHeight="35.0" prefWidth="167.0" />
+      <Label layoutX="367.0" layoutY="256.0" prefHeight="35.0" prefWidth="96.0" text="%current_num">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="367.0" layoutY="200.0" prefHeight="35.0" prefWidth="96.0" text="%init_num">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

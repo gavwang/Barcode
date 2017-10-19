@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -136,6 +138,9 @@ public class BarcodeTranslatorController implements Initializable {
 
     @FXML public void onChangeCopies(MouseEvent event) {
         System.out.println("on copies changed " + copiesSpinner.getValue());
+        
+        copies = copiesSpinner.getValue();
+        //if()
     }
     @FXML public void onMouseTest(MouseEvent event) {}
     @FXML public void onPassword(ActionEvent event) {
@@ -155,7 +160,7 @@ public class BarcodeTranslatorController implements Initializable {
         try
         {
             ResourceBundle bundles = ResourceBundle.getBundle("com.wingain.bundles.string");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Password.fxml") ,bundles);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Password.fxml") ,bundles);
             
            // loader.setRoot(dialogStage);
             Parent root = loader.load();//FXMLLoader.load(getClass().getResource("../view/Password.fxml"));
@@ -249,10 +254,7 @@ public class BarcodeTranslatorController implements Initializable {
                     showRepeatAlertDialog("Warnning", "The Label already be scanned", labelContent.getText());
                 }else
                 {
-                    LabelPrinter.printLabelB(labelContent.getText(),productShortName);
-                    System.out.println(labelContent.getText());
-                    
-                    List<com.wingain.model.Label> current = LabelDB.instance().findLabel(LabelDB.table_label_content, labelContent.getText());
+                	List<com.wingain.model.Label> current = LabelDB.instance().findLabel(LabelDB.table_label_content, labelContent.getText());
                     {
                         if(current.size() == 1)
                         {
@@ -260,6 +262,15 @@ public class BarcodeTranslatorController implements Initializable {
                             searchResult.add(new LabelItem(l.index, l.orderNum, l.productCode, l.labelContent, l.time));
                         }
                     }
+                    
+                	for (int i = 0; i < copies; i++)
+                	{
+                		LabelPrinter.printLabelB(labelContent.getText(),productShortName);
+                	}
+                    
+                    System.out.println(labelContent.getText());
+                    
+                    
                     
                     
                 }
@@ -415,8 +426,8 @@ public class BarcodeTranslatorController implements Initializable {
         LocalDate fTime = new LocalDateStringConverter(format, null).fromString("2000-01-01");
         LocalDate tTime = new LocalDateStringConverter(format, null).fromString("2999-01-01");
         
-        if(fromTime.getValue() == null && toTime.getValue() == null)
-            return null;
+        //if(fromTime.getValue() == null && toTime.getValue() == null)
+        //    return null;
         
         
         if(fromTime.getValue() != null)
@@ -435,7 +446,10 @@ public class BarcodeTranslatorController implements Initializable {
             fTime = tTime;
             tTime = tmp;
         }
-       return LabelDB.instance().findLabelByTime(fTime.toString(), tTime.toString());
+        
+        LocalDateTime newF = LocalDateTime.of(fTime, LocalTime.of(0,0,0));
+        LocalDateTime newT = LocalDateTime.of(tTime, LocalTime.of(23,59,59));
+       return LabelDB.instance().findLabelByTime(newF.toString().replace('T', ' '), newT.toString().replace('T', ' '));
                
     }
 

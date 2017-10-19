@@ -103,6 +103,7 @@ public class LabelPrinter {
     
     public static void printLabelB(String content, String nick)
     {
+    	
         ArrayList<String> labelParse = LabelBGenerator.parseLabelA(content);
         if(labelParse.size() != 3)
         {

@@ -103,6 +103,8 @@ public class ProductShipmentDB
     {
         if(order == null || product == null || series == null)
             return null;
+        addOrderNo(order);
+        addProductCode(product);
         int orderID = orderID(order);
         int productCodeID = productCodeID(product);
         if(orderID == -1 || productCodeID == -1)
@@ -120,8 +122,8 @@ public class ProductShipmentDB
         }else
         {
             //SELECT shipment.id FROM shipment WHERE shipment.order_id = 11 AND shipment.product_id = 7 AND  shipment.series_no = 'sdfgjhk5re'
-            sql = String.format("SELECT %s.%s FROM %s WHERE %s.%s = %d AND %s.%s = %d AND  %s.%s = '%s'",
-                    TABLE_SHIPMENT,TABLE_SHIPMENT_ID, TABLE_SHIPMENT, TABLE_SHIPMENT, TABLE_SHIPMENT_ORDER, orderID, TABLE_SHIPMENT,TABLE_SHIPMENT_PCODE, productCodeID,
+            sql = String.format("SELECT %s.%s, %s.%s FROM %s WHERE %s.%s = %d AND %s.%s = %d AND  %s.%s = '%s'",
+                    TABLE_SHIPMENT,TABLE_SHIPMENT_ID,TABLE_SHIPMENT,TABLE_SHIPMENT_TIME, TABLE_SHIPMENT, TABLE_SHIPMENT, TABLE_SHIPMENT_ORDER, orderID, TABLE_SHIPMENT,TABLE_SHIPMENT_PCODE, productCodeID,
                     TABLE_SHIPMENT, TABLE_SHIPMENT_SCODE, series);
             
             try
@@ -133,9 +135,9 @@ public class ProductShipmentDB
                 {
                     ProductShipment tmp = new ProductShipment();
                     tmp.setIndex(rs.getInt(TABLE_SHIPMENT_ID));
-                    tmp.setOrderNo(rs.getString(TABLE_ORDERS_ORDER));
-                    tmp.setProductCode(rs.getString(TABLE_PRODUCT_CODES_CODE));
-                    tmp.setSeriesNo(rs.getString(TABLE_SHIPMENT_SCODE));
+                    tmp.setOrderNo(order);
+                    tmp.setProductCode(product);
+                    tmp.setSeriesNo(series);
                     tmp.setTime(rs.getString(TABLE_SHIPMENT_TIME));
                     
                     rs.close();
