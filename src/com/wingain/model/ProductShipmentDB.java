@@ -198,7 +198,11 @@ public class ProductShipmentDB
         return findShipment("productCode", text);
     }
     
-
+    public List<ProductShipment> findShipmentbySeriesNo(String text)
+    {
+        return findShipment("series", text);
+    }
+    
     private List<ProductShipment> findShipment(String type, String text)
     {
         /*
@@ -216,10 +220,14 @@ public class ProductShipmentDB
             {
                 table = TABLE_ORDERS;
                 pro = TABLE_ORDERS_ORDER;
-            }else
+            }else if(type.equals("productCode"))
             {
                 table = TABLE_PRODUCT_CODES;
                 pro = TABLE_PRODUCT_CODES_CODE;
+            }else
+            {
+            	table = TABLE_SHIPMENT;
+                pro = TABLE_SHIPMENT_SCODE;
             }
             
             String sql = "SELECT %s.%s, %s.%s, %s.%s, %s.%s, %s.%s "

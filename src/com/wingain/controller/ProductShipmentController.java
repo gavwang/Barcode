@@ -35,10 +35,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 
 public class ProductShipmentController implements Initializable
 {
-    private ResourceBundle resourceBundle;
+	private ResourceBundle resourceBundle;
     private ProductShipmentModel model;
 
     private final ObservableList<ProductShipment> searchResult = FXCollections.observableArrayList();
@@ -66,7 +67,13 @@ public class ProductShipmentController implements Initializable
     private ProductShipment selectedItem ;
     private int scan_num = 1;
     private int current_num = 0;
-    private boolean start_scan = false; 
+    private boolean start_scan = false;
+	@FXML Button btnScanDone;
+	@FXML Button btnScanStart;
+	@FXML TableView<ProductShipment> resultTableSearch;
+	@FXML TextField productCode1;
+	@FXML TextField orderNo1;
+	@FXML TextField seriesNo1; 
     
     
     
@@ -78,16 +85,21 @@ public class ProductShipmentController implements Initializable
         initResultTable();
         
         series_no_txt.setEditable(false);
+        seriesNo.setDisable(true);
         initNumTxt.setDisable(false);
         currentNumTxt.setDisable(true);
         initNumTxt.setText("1");
+        btnScanDone.setDisable(true);
+        btnScanStart.setDisable(false);
+        
+        
         
     }
     
     private void initResultTable()
     {
         ObservableList<TableColumn<ProductShipment,?>> tableColumns = resultTable.getColumns();
-        tableColumns.get(0).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_ID));
+        tableColumns.get(0).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_NO));
         tableColumns.get(1).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_OrderNum));
         tableColumns.get(2).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_ProductCode));
         tableColumns.get(3).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_SeriesNo));
@@ -97,6 +109,30 @@ public class ProductShipmentController implements Initializable
         selectedItem = null;
         resultTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         resultTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ProductShipment>()
+        {
+
+            @Override
+            public void changed(ObservableValue<? extends ProductShipment> observable, ProductShipment oldValue, ProductShipment newValue)
+            {
+                if(newValue != null)
+                {
+                    selectedItem = newValue;
+                }
+            }
+        });
+        
+        
+        ObservableList<TableColumn<ProductShipment,?>> tableColumnsSearch = resultTableSearch.getColumns();
+        tableColumnsSearch.get(0).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_NO));
+        tableColumnsSearch.get(1).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_OrderNum));
+        tableColumnsSearch.get(2).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_ProductCode));
+        tableColumnsSearch.get(3).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_SeriesNo));
+        tableColumnsSearch.get(4).setCellValueFactory(new PropertyValueFactory<>(ProductShipment.SHIPMENT_Time));
+        
+        resultTableSearch.setItems(searchResult);
+        selectedItem = null;
+        resultTableSearch.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        resultTableSearch.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ProductShipment>()
         {
 
             @Override
@@ -160,6 +196,16 @@ public class ProductShipmentController implements Initializable
             
         }
     }
+    
+    private boolean checkSeries()
+    {
+    	String s = seriesNo.getText();
+    	if(s.length() != 12 || !s.toUpperCase().startsWith("SRK"))
+    	{
+    		return false;
+    	}
+    	return true;
+    }
 
     @FXML
     public void onSeriesNoDone(KeyEvent event)
@@ -174,6 +220,13 @@ public class ProductShipmentController implements Initializable
         		return;
         	}
         	
+        	if(!checkSeries())
+        	{
+        		showAlertDialog("Error", "Wrong series No: " + seriesNo.getText());
+        		seriesNo.setText("");
+        		return;
+        	}
+        	      	
             series_no_txt.setText(seriesNo.getText());
             if(checkTextField(seriesNo) && checkTextField(productCode) && checkTextField(orderNo))
             {
@@ -185,18 +238,22 @@ public class ProductShipmentController implements Initializable
                 {
                     current_num ++;
                     currentNumTxt.setText(String.valueOf(current_num));
-                    
+                    p.setNo(current_num);
                     searchResult.add(p);
                 }
                 
                 if(scan_num == current_num)
                 {
-                	onScanDone(null);
-                	showAlertDialog("Warning", "Scaned num " + current_num);
+                	//onScanDone(null);
+                	showAlertDialog("OK", "Scaned finished: " + current_num );
+                	seriesNo.setDisable(true);
+                }else
+                {
+                	seriesNo.setText("");
+                	seriesNo.requestFocus();
                 }
                 
-                seriesNo.setText("");
-                seriesNo.requestFocus();
+                
                 
             }else
             {
@@ -214,6 +271,13 @@ public class ProductShipmentController implements Initializable
         
         if(result == null)
             return;
+        
+        for(int i = 0; i < result.size(); i++)
+        {
+        	ProductShipment p = result.get(i);
+        	p.setNo(i + 1);
+        	
+        }
      
         searchResult.addAll(result);
 
@@ -270,20 +334,25 @@ public class ProductShipmentController implements Initializable
     	
     	if(scan_num != Integer.valueOf(num))
     	{
-    		showAlertDialog("Error", "Setting num is " + scan_num +" currently scaned is " +num );
+    		showAlertDialog("Error", "Setting num is " + scan_num +" currently scaned is " + num );
     		return;
     	}
     	start_scan = false;
     	initNumTxt.setDisable(false);
     	    	
         seriesNo.setText("");
+        seriesNo.setDisable(true);
         productCode.setText("");
         orderNo.setText("");
         productCode.setDisable(false);
         orderNo.setDisable(false);
         orderNo.requestFocus();
         searchResult.clear();
-        //seriesNo.setDisable(true);
+        initNumTxt.setText("1");
+        currentNumTxt.setText("");
+        
+        btnScanDone.setDisable(true);
+        btnScanStart.setDisable(false);
     }
     
 
@@ -303,9 +372,15 @@ public class ProductShipmentController implements Initializable
         seriesNo.setDisable(false);
         scan_num = Integer.valueOf(num);
         initNumTxt.setDisable(true);
+        seriesNo.setDisable(false);
+        seriesNo.requestFocus();
+        
         
         current_num = 0;
         currentNumTxt.setText(String.valueOf(current_num));
+        
+        btnScanDone.setDisable(false);
+        btnScanStart.setDisable(true);
         
     }
     private boolean checkTextField(TextField t)
@@ -337,12 +412,15 @@ public class ProductShipmentController implements Initializable
     private List<ProductShipment> search()
     {
         List<ProductShipment> result = null;
-        if(checkTextField(orderNo))
+        if(checkTextField(orderNo1))
         {
-            result = model.db().findShipmentbyOrder(orderNo.getText());
-        }else if (checkTextField(productCode))
+            result = model.db().findShipmentbyOrder(orderNo1.getText());
+        }else if (checkTextField(productCode1))
         {
-            result = model.db().findShipmentbyProductCode(productCode.getText());
+            result = model.db().findShipmentbyProductCode(productCode1.getText());
+        }else if(checkTextField(seriesNo1))
+        {
+        	result = model.db().findShipmentbySeriesNo(seriesNo1.getText());
         }else 
         {
             result = getTimeSearchResult();

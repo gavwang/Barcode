@@ -8,6 +8,7 @@ import javafx.beans.property.StringProperty;
 public class ProductShipment
 {
     public final static String SHIPMENT_ID = "index";
+    public final static String SHIPMENT_NO = "no";
     public final static String SHIPMENT_OrderNum = "orderNo";
     public final static String SHIPMENT_ProductCode = "productCode";
     public final static String SHIPMENT_SeriesNo = "seriesNo";
@@ -16,8 +17,8 @@ public class ProductShipment
     private StringProperty orderCode;
     private StringProperty productCode;
     private StringProperty seriesNo;
-    private StringProperty time;
-    
+    private StringProperty time;   
+    private IntegerProperty no;
     public ProductShipment()
     {
         
@@ -44,6 +45,21 @@ public class ProductShipment
     {
         if(index == null)  index = new SimpleIntegerProperty(this,"index", 0);
         return index;
+    }
+    
+    public void setNo(int _no)
+    {
+        noProperty().set(_no);
+    }
+    public int getNo()
+    {
+        return noProperty().get();
+    }
+    
+    private IntegerProperty noProperty()
+    {
+        if(no == null)  no = new SimpleIntegerProperty(this,"no", 0);
+        return no;
     }
     
     public void setOrderNo(String order)

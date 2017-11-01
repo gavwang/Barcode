@@ -138,7 +138,7 @@ public class DataExporter
         Row row = sheet.createRow(rownum++);
         int clonum = 0;
         Cell cell = row.createCell(clonum++);
-        cell.setCellValue(l.getIndex());
+        cell.setCellValue(l.getNo());
         
         cell = row.createCell(clonum++);
         cell.setCellValue(l.getOrderNo());
